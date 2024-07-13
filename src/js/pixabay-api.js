@@ -1,4 +1,3 @@
-// src/js/pixabay-api.js
 import axios from 'axios';
 
 const API_KEY = '44806240-6b3f320b71171cc3cb97c5da2';
