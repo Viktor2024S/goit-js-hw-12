@@ -15,6 +15,7 @@
 }
 
 /* styles.css */
+/* styles.css */
 body {
   font-family: Arial, sans-serif;
   margin: 0;
@@ -90,7 +91,6 @@ button:hover {
   color: #555;
 }
 
-/* === Loader === */
 #loader {
   border: 16px solid #f3f3f3;
   border-radius: 50%;
@@ -104,9 +104,11 @@ button:hover {
   transform: translate(-50%, -50%);
   display: flex;
 }
-div#loader.hidden {
+
+#loader.hidden {
   display: none;
 }
+
 @keyframes spin {
   0% {
     transform: rotate(0deg);
@@ -117,5 +119,20 @@ div#loader.hidden {
 }
 
 .hidden {
+  display: none;
+}
+
+.load-more {
+  display: block;
+  margin: 20px auto;
+  padding: 10px 20px;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.load-more.hidden {
   display: none;
 }
