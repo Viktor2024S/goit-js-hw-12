@@ -2,18 +2,18 @@ import { fetchImages } from './js/pixabay-api.js';
 import { renderGallery } from './js/render-functions.js';
 import iziToast from 'izitoast/dist/js/iziToast.min.js';
 import 'izitoast/dist/css/iziToast.min.css';
+import SimpleLightbox from 'simplelightbox';
+import 'simplelightbox/dist/simple-lightbox.min.css';
 
 const form = document.querySelector('#search-form');
 const gallery = document.querySelector('#gallery');
 const loader = document.querySelector('#loader');
-const loadMoreBtn = document.createElement('button');
-loadMoreBtn.textContent = 'Load more';
-loadMoreBtn.classList.add('load-more');
-loadMoreBtn.classList.add('hidden');
-document.body.appendChild(loadMoreBtn);
+const loadMoreBtn = document.querySelector('#load-more');
 
 let query = '';
 let page = 1;
+const perPage = 15;
+let lightbox;
 
 async function handleSearch(event) {
   event.preventDefault();
@@ -32,8 +32,13 @@ async function handleSearch(event) {
   gallery.innerHTML = '';
   loadMoreBtn.classList.add('hidden');
 
+  // Destroy the previous instance of SimpleLightbox
+  if (lightbox) {
+    lightbox.destroy();
+  }
+
   try {
-    const data = await fetchImages(query, page);
+    const data = await fetchImages(query, page, perPage);
     if (data.hits.length === 0) {
       iziToast.warning({
         title: 'No results',
@@ -42,7 +47,8 @@ async function handleSearch(event) {
       });
     } else {
       renderGallery(data.hits, gallery);
-      if (data.totalHits > 15) {
+      lightbox = new SimpleLightbox('.gallery a', {});
+      if (data.totalHits > perPage) {
         loadMoreBtn.classList.remove('hidden');
       }
     }
@@ -63,10 +69,10 @@ async function loadMore() {
   loadMoreBtn.classList.add('hidden');
 
   try {
-    const data = await fetchImages(query, page);
+    const data = await fetchImages(query, page, perPage);
     renderGallery(data.hits, gallery);
 
-    if (page * 15 >= data.totalHits) {
+    if (page * perPage >= data.totalHits) {
       loadMoreBtn.classList.add('hidden');
       iziToast.info({
         title: 'Info',

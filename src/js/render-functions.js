@@ -1,6 +1,8 @@
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 
+let lightbox;
+
 export function renderGallery(images, container) {
   const markup = images
     .map(
@@ -22,6 +24,9 @@ export function renderGallery(images, container) {
 
   container.insertAdjacentHTML('beforeend', markup);
 
-  const lightbox = new SimpleLightbox('.gallery a', {});
-  lightbox.refresh();
+  if (lightbox) {
+    lightbox.refresh();
+  } else {
+    lightbox = new SimpleLightbox('.gallery a', {});
+  }
 }
